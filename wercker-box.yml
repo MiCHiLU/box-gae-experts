@@ -1,11 +1,11 @@
 # refs:
 # https://github.com/wercker/box-ubuntu12.04-webessentials/blob/master/wercker-box.yml
 
-name: ubuntu12.04-webessentials
+name: gae-experts
 version: 0.0.0
 type: main
 platform: ubuntu@12.04
-description: Base box with most popular libraries for the web installed
+description: wercker box for Google App Engine Go/Python.
 packages:
   - nodejs@0.10.26
   - phantomjs@1.9.7
