@@ -75,8 +75,8 @@ script: |
   # phantomjs
   sudo apt-get install libfreetype6 libfontconfig1 -y
   cd $HOME
-  curl --location --remote-name https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
+  curl --location --remote-name https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
   mkdir phantomjs
-  tar -C phantomjs --strip-components=1 -xf phantomjs-1.9.7-linux-x86_64.tar.bz2
+  tar -C phantomjs --strip-components=1 -xf phantomjs-1.9.8-linux-x86_64.tar.bz2
   echo 'export PATH="$HOME/phantomjs/bin:$PATH"' >> ~/.bash_profile
   phantomjs/bin/phantomjs -v
