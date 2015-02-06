@@ -35,7 +35,7 @@ script: |
   sudo easy_install pip
 
   # Google App Engine
-  sudo apt-get install unzip -y
+  sudo apt-get install libxml2-dev libxslt1-dev python2.7-dev unzip -y
   curl -s -o google_appengine.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.17.zip
   sudo unzip -q google_appengine.zip -d /usr/local
   rm google_appengine.zip
