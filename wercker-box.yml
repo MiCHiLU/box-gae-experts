@@ -2,7 +2,7 @@
 # https://github.com/wercker/box-ubuntu12.04-webessentials/blob/master/wercker-box.yml
 
 name: ubuntu12.04-webessentials
-version: 1.0.4
+version: 0.0.0
 type: main
 platform: ubuntu@12.04
 description: Base box with most popular libraries for the web installed
