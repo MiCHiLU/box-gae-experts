@@ -7,48 +7,8 @@ type: main
 platform: ubuntu@12.04
 description: Base box with most popular libraries for the web installed
 packages:
-  - wget
-  - build-essential
-  - curl
-  - git-core
-  - nano
-  - language-pack-en
   - nodejs@0.10.26
-  - npm@1.4.3
-  - erlang
-  - openjdk-6-jre
-  - ruby1.9.3
-  - libxslt-dev
-  - libxml2-dev
-  - imagemagick
-  - libmagickwand-dev
-  - zlib1g-dev
-  - libfreetype6-dev
-  - liblcms1-dev
-  - libjpeg8-dev
-  - libevent-dev
-  - libev-dev
-  - libyaml-dev
-  - libffi-dev
-  - libtidy-dev
-  - libsqlite3-dev
-  - libcurl4-openssl-dev
-  - libssl-dev
-  - libmemcached-dev
-  - memcached
-  - mongodb-clients
-  - xvfb
-  - firefox
-  - libqtwebkit4
-  - wkhtmltopdf
-  - elasticsearch@0.20.5
   - phantomjs@1.9.7
-  - libv8-dev
-  - postgresql-client@9.3
-  - optipng@0.7.5
-  - libjpeg-dev
-  - libpng-dev
-  - chef@11.12.4
 script: |
   cd $WERCKER_SOURCE_DIR
   export
