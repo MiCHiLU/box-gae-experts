@@ -1,0 +1,47 @@
+# refs:
+# https://github.com/wercker/box-ubuntu12.04-webessentials/blob/master/wercker-box.yml
+
+name: ubuntu12.04-webessentials
+version: 0.0.0
+type: main
+platform: ubuntu@12.04
+description: Base box with most popular libraries for the web installed
+packages:
+  - nodejs@0.10.26
+  - phantomjs@1.9.7
+script: |
+  cd $WERCKER_SOURCE_DIR
+  export
+  ./hosts.sh
+
+  # fix permissions for home temp folder
+  mkdir -p $HOME/tmp
+  sudo chown ubuntu:ubuntu $HOME/tmp
+  chmod 755 $HOME/tmp
+
+  # First, have to run `apt-get update` before `apt-get install`.
+  sudo apt-get update
+  sudo apt-get install build-essential curl git-core libjpeg-dev libpng-dev -y
+
+  # node.js
+  # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
+  sudo apt-get install python-software-properties -y
+  # `add-apt-repository` needs `software-properties-common` on Ubuntu 14.x
+  #sudo apt-get install software-properties-common -y
+  sudo add-apt-repository ppa:chris-lea/node.js -y
+  sudo apt-get update
+  sudo apt-get install nodejs -y
+
+  # phantomjs
+  sudo apt-get install libfreetype6 libfontconfig1 -y
+  cd $HOME
+  curl --location --remote-name https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
+  mkdir phantomjs
+  tar -C phantomjs --strip-components=1 -xf phantomjs-1.9.8-linux-x86_64.tar.bz2
+  echo 'export PATH="$HOME/phantomjs/bin:$PATH"' >> ~/.bash_profile
+
+  # print versions
+  git version
+  npm -v
+  phantomjs/bin/phantomjs -v
+  python --version
