@@ -1,3 +1,6 @@
+# refs:
+# https://github.com/wercker/box-ubuntu12.04-webessentials/blob/master/wercker-box.yml
+
 name: ubuntu12.04-webessentials
 version: 1.0.4
 type: main
