@@ -1,91 +1,73 @@
+# refs:
+# https://github.com/wercker/box-ubuntu12.04-webessentials/blob/master/wercker-box.yml
+
 name: ubuntu12.04-webessentials
-version: 1.0.4
+version: 0.0.0
 type: main
 platform: ubuntu@12.04
 description: Base box with most popular libraries for the web installed
 packages:
-  - wget
   - build-essential
   - curl
   - git-core
-  - nano
-  - language-pack-en
-  - nodejs@0.10.26
-  - npm@1.4.3
-  - erlang
-  - openjdk-6-jre
-  - ruby1.9.3
-  - libxslt-dev
-  - libxml2-dev
   - imagemagick
-  - libmagickwand-dev
-  - zlib1g-dev
-  - libfreetype6-dev
-  - liblcms1-dev
-  - libjpeg8-dev
-  - libevent-dev
-  - libev-dev
-  - libyaml-dev
-  - libffi-dev
-  - libtidy-dev
-  - libsqlite3-dev
+  - language-pack-en
   - libcurl4-openssl-dev
-  - libssl-dev
-  - libmemcached-dev
-  - memcached
-  - mongodb-clients
-  - xvfb
-  - firefox
-  - libqtwebkit4
-  - wkhtmltopdf
-  - elasticsearch@0.20.5
-  - phantomjs@1.9.7
-  - libv8-dev
-  - postgresql-client@9.3
-  - optipng@0.7.5
+  - libev-dev
+  - libevent-dev
+  - libffi-dev
+  - libfreetype6-dev
   - libjpeg-dev
+  - libjpeg8-dev
+  - liblcms1-dev
+  - libmagickwand-dev
   - libpng-dev
-  - chef@11.12.4
+  - libqtwebkit4
+  - libsqlite3-dev
+  - libssl-dev
+  - libv8-dev
+  - libxml2-dev
+  - libxslt-dev
+  - libyaml-dev
+  - nodejs
+  - npm
+  - phantomjs
+  - ruby
+  - xvfb
+  - zlib1g-dev
 script: |
-  sudo apt-get update
-  sudo apt-get install curl -y
-  curl -L https://www.opscode.com/chef/install.sh | sudo bash
-  sudo chef-solo -c $WERCKER_SOURCE_DIR/solo.rb -j $WERCKER_SOURCE_DIR/solo.json -l debug
   cd $WERCKER_SOURCE_DIR
   export
   ./hosts.sh
-  sudo apt-get --purge remove postgresql\*
-  wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
-  sudo sh -c "echo deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main > /etc/apt/sources.list.d/postgresql.list"
-  sudo add-apt-repository ppa:chris-lea/node.js -y
-  sudo apt-get update
-  sudo apt-get install nodejs postgresql-client-9.3 libjpeg-dev libpng-dev checkinstall -y
-  export DATA=`node -v`
-  if [ ! $DATA = "v0.10.28" ] ; then error "Node v0.10.26 expected, got: $DATA" ; fi
-  npm -v
-  sudo apt-get update
-  sudo apt-get install wget build-essential checkinstall
-  # download/build optipng
-  cd $HOME
-  wget http://downloads.sourceforge.net/project/optipng/OptiPNG/optipng-0.7.5/optipng-0.7.5.tar.gz
-  tar xf optipng-0.7.5.tar.gz
-  cd optipng-0.7.5
-  ./configure
-  make
-  sudo checkinstall -y
-  cd $HOME
-  sudo rm -rf optipng-0.7.5
-  sudo rm optipng-0.7.5.tar.gz
-  optipng -v
 
   # fix permissions for home temp folder
   mkdir -p $HOME/tmp
   sudo chown ubuntu:ubuntu $HOME/tmp
   chmod 755 $HOME/tmp
 
+  # First, have to run `apt-get update` before `apt-get install`.
+  sudo apt-get update
+  sudo apt-get install build-essential curl git-core libjpeg-dev libpng-dev -y
+
+  # node.js
+  # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
+  sudo apt-get install python-software-properties -y
+  # `add-apt-repository` needs `software-properties-common` on Ubuntu 14.x
+  #sudo apt-get install software-properties-common -y
+  sudo add-apt-repository ppa:chris-lea/node.js -y
+  sudo apt-get update
+  sudo apt-get install nodejs -y
+
+  # phantomjs
+  sudo apt-get install libfreetype6 libfontconfig1 -y
   cd $HOME
-  wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
+  curl --location --remote-name https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
   mkdir phantomjs
-  tar -C phantomjs --strip-components=1 -xf phantomjs-1.9.7-linux-x86_64.tar.bz2
+  tar -C phantomjs --strip-components=1 -xf phantomjs-1.9.8-linux-x86_64.tar.bz2
   echo 'export PATH="$HOME/phantomjs/bin:$PATH"' >> ~/.bash_profile
+
+  # print versions
+  git version
+  npm -v
   phantomjs/bin/phantomjs -v
+  python --version
