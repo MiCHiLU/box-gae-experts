@@ -8,7 +8,7 @@ platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
 packages:
   - nodejs@0.10.26
-  - phantomjs@1.9.7
+  - phantomjs@1.9.8
 script: |
   cd $WERCKER_SOURCE_DIR
   export
@@ -42,6 +42,6 @@ script: |
 
   # print versions
   git version
-  npm -v
+  node -v
   phantomjs/bin/phantomjs -v
   python --version
