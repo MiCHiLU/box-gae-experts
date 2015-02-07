@@ -184,5 +184,18 @@ default-build:
               code: |-
                 rsync -avz --copy-unsafe-links ${GOPATH%%:*}/ $WERCKER_OUTPUT_DIR
 
+default-deploy:
+  go:
+    priority : 50
+    detect:
+      - default: true
+    text-to-append: |
+      # Build definition
+      steps:
+      - setup-go-workspace
+      - michilu/go-appengine-deploy:
+          email:    $APP_ENGINE_EMAIL
+          password: $APP_ENGINE_PASSWORD
+
 env:
   GOOGLE_APPENGINE: /usr/local/google_appengine
