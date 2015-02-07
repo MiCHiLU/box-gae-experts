@@ -109,7 +109,7 @@ script: |
   tar -C $HOME/phantomjs --strip-components=1 -xf phantomjs.tar.bz2
   rm phantomjs.tar.bz2
   export PATH=$PATH:$HOME/phantomjs/bin
-  echo 'export PATH="$PATH:$HOME/phantomjs/bin"' >> ~/.bash_profile
+  echo 'export PATH=$PATH:$HOME/phantomjs/bin' | sudo tee -a /etc/profile
 
   # Ruby
   # refs: step-bundle-install
