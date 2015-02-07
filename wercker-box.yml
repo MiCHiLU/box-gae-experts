@@ -4,6 +4,7 @@
 # https://github.com/MiCHiLU/box-appengine-python
 # https://github.com/wercker/box-golang/blob/master/wercker-box.yml
 # https://github.com/MiCHiLU/box-goapp/blob/master/wercker-box.yml
+# https://github.com/MiCHiLU/box-appengine-python-plus-dart/blob/master/wercker-box.yml
 
 name: gae-experts
 version: 0.0.0
@@ -12,12 +13,14 @@ platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
 keywords:
   - Google App Engine
+  - dart
   - gae
   - go
   - python
 packages:
   - Google App Engine@1.9.17
   - bzr
+  - dart@1.8.5
   - git
   - go@1.2.1
   - mercurial
@@ -26,6 +29,7 @@ packages:
   - pip
   - python@2.7.3
 script: |
+  dart_revision="42828"
   gae_version="1.9.17"
 
   cd $WERCKER_SOURCE_DIR
@@ -65,6 +69,18 @@ script: |
   echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
   echo 'export GOPATH="$HOME/go:$WERCKER_SOURCE_DIR"' | sudo tee -a /etc/profile
 
+  # Dart
+  # Install Dart SDK
+  curl -O "http://storage.googleapis.com/dart-archive/channels/stable/release/${dart_revision}/sdk/dartsdk-linux-x64-release.zip"
+  sudo unzip -q dartsdk-linux-x64-release.zip -d /usr/local
+  rm dartsdk-linux-x64-release.zip
+  sudo chmod -R a+rx /usr/local/dart-sdk
+  export PATH=$PATH:/usr/local/dart-sdk/bin
+  # Export variables
+  echo 'export PATH=$PATH:/usr/local/dart-sdk/bin' | sudo tee -a /etc/profile
+  # Link cache directory
+  ln -s $HOME/.pub-cache $WERCKER_CACHE_DIR/.pub-cache
+
   # Node.js
   # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
   sudo apt-get install python-software-properties -y
@@ -84,12 +100,15 @@ script: |
   echo 'export PATH="$HOME/phantomjs/bin:$PATH"' >> ~/.bash_profile
 
   # print versions
+  dart --version
+  dart2js --version
   git version
   goapp version
   hg --version
   node --version
   phantomjs/bin/phantomjs --version
   pip --version
+  pub version
   python --version
 
 env:
