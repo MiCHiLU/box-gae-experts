@@ -125,6 +125,10 @@ script: |
   npm config set cache $WERCKER_CACHE_DIR/npm
   sudo npm install -g coffee-script uglify-js
 
+  # print environment variables
+  echo $PATH
+  echo $GOPATH
+
   # print versions
   bundle version
   coffee --version
