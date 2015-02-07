@@ -48,6 +48,7 @@ script: |
 
   # Python
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
+  rm -f setuptools-*.zip
   sudo easy_install pip
 
   # Google App Engine Python
@@ -80,7 +81,7 @@ script: |
   # Export variables
   echo 'export PATH=$PATH:/usr/local/dart-sdk/bin' | sudo tee -a /etc/profile
   # Link cache directory
-  ln -s $HOME/.pub-cache $WERCKER_CACHE_DIR/.pub-cache
+  ln -s $HOME/.pub-cache $WERCKER_CACHE_DIR/.pub-cache || echo -n
 
   # Node.js
   # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
@@ -93,12 +94,12 @@ script: |
 
   # PhantomJS
   sudo apt-get install libfreetype6 libfontconfig1 -y
-  cd $HOME
   curl -L -o phantomjs.tar.bz2 https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
-  mkdir phantomjs
-  tar -C phantomjs --strip-components=1 -xf phantomjs.tar.bz2
+  mkdir $HOME/phantomjs
+  tar -C $HOME/phantomjs --strip-components=1 -xf phantomjs.tar.bz2
   rm phantomjs.tar.bz2
-  echo 'export PATH="$HOME/phantomjs/bin:$PATH"' >> ~/.bash_profile
+  export PATH=$PATH:$HOME/phantomjs/bin
+  echo 'export PATH="$PATH:$HOME/phantomjs/bin"' >> ~/.bash_profile
 
   # print versions
   dart --version
@@ -107,7 +108,7 @@ script: |
   goapp version
   hg --version
   node --version
-  phantomjs/bin/phantomjs --version
+  phantomjs --version
   pip --version
   pub version
   python --version
