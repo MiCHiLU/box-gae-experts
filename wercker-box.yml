@@ -30,7 +30,7 @@ script: |
   sudo apt-get update
   sudo apt-get install build-essential curl git libjpeg-dev libpng-dev mercurial -y
 
-  # python
+  # Python
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
   sudo easy_install pip
 
@@ -42,7 +42,7 @@ script: |
   sudo patch -d /usr/local/google_appengine/lib/endpoints-1.0/endpoints -p0 -i $PWD/endpoints.patch
   sudo -H pip install --quiet -r requirements.txt
 
-  # node.js
+  # Node.js
   # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
   sudo apt-get install python-software-properties -y
   # `add-apt-repository` needs `software-properties-common` on Ubuntu 14.x
@@ -51,7 +51,7 @@ script: |
   sudo apt-get update
   sudo apt-get install nodejs -y
 
-  # phantomjs
+  # PhantomJS
   sudo apt-get install libfreetype6 libfontconfig1 -y
   cd $HOME
   curl -L -o phantomjs.tar.bz2 https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-linux-x86_64.tar.bz2
