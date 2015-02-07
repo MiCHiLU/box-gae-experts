@@ -74,13 +74,13 @@ script: |
   sudo unzip -q google_appengine.zip -d /usr/local
   rm google_appengine.zip
   sudo chmod -R a+rx /usr/local/go_appengine
-  export PATH=$PATH:/usr/local/go_appengine
-  echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
   # Make actual go workspace dir structure
   mkdir -p "$HOME/go/{src,pkg,bin}"
   # set GOPATH
   export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR
   echo 'export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR' | sudo tee -a /etc/profile
+  export PATH=$PATH:/usr/local/go_appengine
+  echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
 
   # Dart
   # Install Dart SDK
