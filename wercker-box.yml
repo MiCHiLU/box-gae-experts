@@ -10,6 +10,11 @@ version: 0.0.0
 type: main
 platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
+keywords:
+  - Google App Engine
+  - gae
+  - go
+  - python
 packages:
   - Google App Engine@1.9.17
   - bzr
