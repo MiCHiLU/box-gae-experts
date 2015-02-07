@@ -79,7 +79,7 @@ script: |
   mkdir -p "$HOME/go/{src,pkg,bin}"
   # set GOPATH
   echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
-  echo 'export GOPATH="$HOME/go:$WERCKER_SOURCE_DIR"' | sudo tee -a /etc/profile
+  echo 'export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR' | sudo tee -a /etc/profile
 
   # Dart
   # Install Dart SDK
@@ -91,7 +91,8 @@ script: |
   # Export variables
   echo 'export PATH=$PATH:/usr/local/dart-sdk/bin' | sudo tee -a /etc/profile
   # Link cache directory
-  ln -s $HOME/.pub-cache $WERCKER_CACHE_DIR/.pub-cache || echo -n
+  mkdir -p $WERCKER_CACHE_DIR/.pub-cache
+  ln -s $WERCKER_CACHE_DIR/.pub-cache $HOME/.pub-cache
 
   # Node.js
   # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
@@ -109,7 +110,7 @@ script: |
   tar -C $HOME/phantomjs --strip-components=1 -xf phantomjs.tar.bz2
   rm phantomjs.tar.bz2
   export PATH=$PATH:$HOME/phantomjs/bin
-  echo 'export PATH="$PATH:$HOME/phantomjs/bin"' >> ~/.bash_profile
+  echo 'export PATH=$PATH:$HOME/phantomjs/bin' | sudo tee -a /etc/profile
 
   # Ruby
   # refs: step-bundle-install
@@ -119,8 +120,8 @@ script: |
   bundle install --binstubs --jobs=4
 
   # refs: step-npm-install
-  mkdir -p $WERCKER_CACHE_DIR/wercker/npm
-  npm config set cache $WERCKER_CACHE_DIR/wercker/npm
+  mkdir -p $WERCKER_CACHE_DIR/npm
+  npm config set cache $WERCKER_CACHE_DIR/npm
   sudo npm install -g coffee-script uglify-js
 
   # print versions
