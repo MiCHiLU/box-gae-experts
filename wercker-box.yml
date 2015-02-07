@@ -5,6 +5,8 @@
 # https://github.com/wercker/box-golang/blob/master/wercker-box.yml
 # https://github.com/MiCHiLU/box-goapp/blob/master/wercker-box.yml
 # https://github.com/MiCHiLU/box-appengine-python-plus-dart/blob/master/wercker-box.yml
+# https://github.com/wercker/box-ubuntu12.04-ruby2.0.0/blob/master/wercker-box.yml
+# https://github.com/wercker/step-bundle-install/blob/master/run.sh
 
 name: gae-experts
 version: 0.0.0
@@ -13,12 +15,16 @@ platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
 keywords:
   - Google App Engine
+  - compass
   - dart
   - gae
   - go
+  - haml
   - python
+  - sass
 packages:
   - Google App Engine@1.9.17
+  - bundler
   - bzr
   - dart@1.8.5
   - git
@@ -44,7 +50,7 @@ script: |
 
   # First, have to run `apt-get update` before `apt-get install`.
   sudo apt-get update
-  sudo apt-get install build-essential bzr curl git libjpeg-dev libpng-dev mercurial ruby1.8 -y
+  sudo apt-get install build-essential bzr curl git libjpeg-dev libpng-dev mercurial -y
 
   # Python
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
@@ -101,11 +107,21 @@ script: |
   export PATH=$PATH:$HOME/phantomjs/bin
   echo 'export PATH="$PATH:$HOME/phantomjs/bin"' >> ~/.bash_profile
 
+  # Ruby
+  # refs: step-bundle-install
+  sudo apt-get install ruby1.8 rubygems1.8 -y
+  echo "gem: --no-rdoc --no-ri" >> $HOME/.gemrc
+  sudo gem install bundler
+  bundle install --binstubs --jobs=4
+
   # print versions
+  bundle version
+  compass version
   dart --version
   dart2js --version
   git version
   goapp version
+  haml --version
   hg --version
   node --version
   phantomjs --version
