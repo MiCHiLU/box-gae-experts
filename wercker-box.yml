@@ -28,6 +28,7 @@ packages:
   - phantomjs@1.9.8
   - pip
   - python@2.7.3
+  - ruby@1.8.7
 script: |
   dart_revision="42828"
   gae_version="1.9.17"
@@ -43,7 +44,7 @@ script: |
 
   # First, have to run `apt-get update` before `apt-get install`.
   sudo apt-get update
-  sudo apt-get install build-essential bzr curl git libjpeg-dev libpng-dev mercurial -y
+  sudo apt-get install build-essential bzr curl git libjpeg-dev libpng-dev mercurial ruby1.8 -y
 
   # Python
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
@@ -110,6 +111,7 @@ script: |
   pip --version
   pub version
   python --version
+  ruby --version
 
 env:
   GOOGLE_APPENGINE: /usr/local/google_appengine
