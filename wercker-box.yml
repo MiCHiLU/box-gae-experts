@@ -54,7 +54,7 @@ script: |
 
   # First, have to run `apt-get update` before `apt-get install`.
   sudo apt-get update
-  sudo apt-get install build-essential bzr curl git libjpeg-dev libpng-dev mercurial -y
+  sudo apt-get install bzr curl git make mercurial -y
 
   # Python
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
