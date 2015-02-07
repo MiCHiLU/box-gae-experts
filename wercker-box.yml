@@ -157,16 +157,15 @@ default-build:
           - setup-go-workspace
 
           - script:
-              name: set GOPATH
+              name: Go environments
               code: |
-                export GOPATH="$GOPATH:$WERCKER_SOURCE_DIR"
+                goapp version
                 goapp env GOPATH
           # Gets the dependencies
           - script:
               name: goapp get
               code: |
                 cd $WERCKER_SOURCE_DIR
-                goapp version
                 goapp get -t ./...
           # Build the project
           - script:
@@ -182,7 +181,7 @@ default-build:
           - script:
               name: copy to output directory
               code: |-
-                rsync -avz ${GOPATH%%:*}/ $WERCKER_OUTPUT_DIR
+                rsync -avz --copy-unsafe-links ${GOPATH%%:*}/ $WERCKER_OUTPUT_DIR
 
 env:
   GOOGLE_APPENGINE: /usr/local/google_appengine
