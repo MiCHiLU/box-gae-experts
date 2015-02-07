@@ -77,10 +77,10 @@ script: |
   # Make actual go workspace dir structure
   mkdir -p "$HOME/go/{src,pkg,bin}"
   # set GOPATH
-  export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR
-  echo 'export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR' | sudo tee -a /etc/profile
-  export PATH=$PATH:/usr/local/go_appengine
-  echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
+  export GOPATH="$HOME/go:$WERCKER_SOURCE_DIR"
+  echo 'export GOPATH="$HOME/go:$WERCKER_SOURCE_DIR"' | sudo tee -a /etc/profile
+  export PATH="$PATH:/usr/local/go_appengine"
+  echo 'export PATH="$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin"' | sudo tee -a /etc/profile
 
   # Dart
   # Install Dart SDK
@@ -89,8 +89,8 @@ script: |
   rm dartsdk-linux-x64-release.zip
   sudo chmod -R a+rx /usr/local/dart-sdk
   # Export variables
-  export PATH=$PATH:/usr/local/dart-sdk/bin
-  echo 'export PATH=$PATH:/usr/local/dart-sdk/bin' | sudo tee -a /etc/profile
+  export PATH="$PATH:/usr/local/dart-sdk/bin"
+  echo 'export PATH="$PATH:/usr/local/dart-sdk/bin"' | sudo tee -a /etc/profile
   # Link cache directory
   mkdir -p $WERCKER_CACHE_DIR/.pub-cache
   ln -s $WERCKER_CACHE_DIR/.pub-cache $HOME/.pub-cache
@@ -110,8 +110,8 @@ script: |
   mkdir $HOME/phantomjs
   tar -C $HOME/phantomjs --strip-components=1 -xf phantomjs.tar.bz2
   rm phantomjs.tar.bz2
-  export PATH=$PATH:$HOME/phantomjs/bin
-  echo 'export PATH=$PATH:$HOME/phantomjs/bin' | sudo tee -a /etc/profile
+  export PATH="$PATH:$HOME/phantomjs/bin"
+  echo 'export PATH="$PATH:$HOME/phantomjs/bin"' | sudo tee -a /etc/profile
 
   # Ruby
   # refs: step-bundle-install
