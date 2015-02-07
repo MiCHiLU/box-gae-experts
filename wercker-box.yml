@@ -75,10 +75,11 @@ script: |
   rm google_appengine.zip
   sudo chmod -R a+rx /usr/local/go_appengine
   export PATH=$PATH:/usr/local/go_appengine
+  echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
   # Make actual go workspace dir structure
   mkdir -p "$HOME/go/{src,pkg,bin}"
   # set GOPATH
-  echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
+  export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR
   echo 'export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR' | sudo tee -a /etc/profile
 
   # Dart
@@ -87,8 +88,8 @@ script: |
   sudo unzip -q dartsdk-linux-x64-release.zip -d /usr/local
   rm dartsdk-linux-x64-release.zip
   sudo chmod -R a+rx /usr/local/dart-sdk
-  export PATH=$PATH:/usr/local/dart-sdk/bin
   # Export variables
+  export PATH=$PATH:/usr/local/dart-sdk/bin
   echo 'export PATH=$PATH:/usr/local/dart-sdk/bin' | sudo tee -a /etc/profile
   # Link cache directory
   mkdir -p $WERCKER_CACHE_DIR/.pub-cache
