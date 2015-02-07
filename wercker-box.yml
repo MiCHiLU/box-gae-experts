@@ -2,6 +2,8 @@
 # https://github.com/wercker/box-ubuntu12.04-webessentials/blob/master/wercker-box.yml
 # https://github.com/wercker/box-python/blob/master/provision.sh
 # https://github.com/MiCHiLU/box-appengine-python
+# https://github.com/wercker/box-golang/blob/master/wercker-box.yml
+# https://github.com/MiCHiLU/box-goapp/blob/master/wercker-box.yml
 
 name: gae-experts
 version: 0.0.0
@@ -10,7 +12,9 @@ platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
 packages:
   - Google App Engine@1.9.17
+  - bzr
   - git
+  - go@1.2.1
   - mercurial
   - nodejs@0.10.33
   - phantomjs@1.9.8
@@ -30,7 +34,7 @@ script: |
 
   # First, have to run `apt-get update` before `apt-get install`.
   sudo apt-get update
-  sudo apt-get install build-essential curl git libjpeg-dev libpng-dev mercurial -y
+  sudo apt-get install build-essential bzr curl git libjpeg-dev libpng-dev mercurial -y
 
   # Python
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
@@ -43,6 +47,18 @@ script: |
   rm google_appengine.zip
   sudo patch -d /usr/local/google_appengine/lib/endpoints-1.0/endpoints -p0 -i $PWD/endpoints.patch
   sudo -H pip install --quiet -r requirements.txt
+
+  # Google App Engine Go
+  curl -s -o google_appengine.zip https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-${gae_version}.zip
+  sudo unzip -q google_appengine.zip -d /usr/local
+  rm google_appengine.zip
+  sudo chmod -R a+rx /usr/local/go_appengine
+  export PATH=$PATH:/usr/local/go_appengine
+  # Make actual go workspace dir structure
+  mkdir -p "$HOME/go/{src,pkg,bin}"
+  # set GOPATH
+  echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
+  echo 'export GOPATH="$HOME/go:$WERCKER_SOURCE_DIR"' | sudo tee -a /etc/profile
 
   # Node.js
   # `add-apt-repository` needs `python-software-properties` on Ubuntu 12.x
@@ -64,6 +80,7 @@ script: |
 
   # print versions
   git version
+  goapp version
   hg --version
   node --version
   phantomjs/bin/phantomjs --version
