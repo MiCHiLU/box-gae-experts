@@ -142,5 +142,46 @@ script: |
   ruby --version
   uglifyjs --version
 
+default-build:
+  go:
+    priority : 50
+    detect:
+      - default: true
+    text-to-append: |
+      # Build definition
+      build:
+        # The steps that will be executed on build
+        steps:
+          # Sets the go workspace and places you package
+          # at the right place in the workspace tree
+          - setup-go-workspace
+
+          - script:
+              name: Go environments
+              code: |
+                goapp version
+                goapp env GOPATH
+          # Gets the dependencies
+          - script:
+              name: goapp get
+              code: |
+                cd $WERCKER_SOURCE_DIR
+                goapp get -t ./...
+          # Build the project
+          - script:
+              name: goapp build
+              code: |
+                goapp build ./...
+          # Test the project
+          - script:
+              name: goapp test
+              code: |
+                goapp test ./...
+          # Output the project
+          - script:
+              name: copy to output directory
+              code: |-
+                rsync -avz --copy-unsafe-links ${GOPATH%%:*}/ $WERCKER_OUTPUT_DIR
+
 env:
   GOOGLE_APPENGINE: /usr/local/google_appengine
