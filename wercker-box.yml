@@ -7,6 +7,7 @@
 # https://github.com/MiCHiLU/box-appengine-python-plus-dart/blob/master/wercker-box.yml
 # https://github.com/wercker/box-ubuntu12.04-ruby2.0.0/blob/master/wercker-box.yml
 # https://github.com/wercker/step-bundle-install/blob/master/run.sh
+# https://github.com/wercker/step-npm-install/blob/master/run.sh
 
 name: gae-experts
 version: 0.0.0
@@ -15,6 +16,7 @@ platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
 keywords:
   - Google App Engine
+  - coffee script
   - compass
   - dart
   - gae
@@ -22,6 +24,7 @@ keywords:
   - haml
   - python
   - sass
+  - uglify-js
 packages:
   - Google App Engine@1.9.17
   - bundler
@@ -31,6 +34,7 @@ packages:
   - go@1.2.1
   - mercurial
   - nodejs@0.10.33
+  - npm
   - phantomjs@1.9.8
   - pip
   - python@2.7.3
@@ -114,8 +118,14 @@ script: |
   sudo gem install bundler
   bundle install --binstubs --jobs=4
 
+  # refs: step-npm-install
+  mkdir -p $WERCKER_CACHE_DIR/wercker/npm
+  npm config set cache $WERCKER_CACHE_DIR/wercker/npm
+  sudo npm install -g coffee-script uglify-js
+
   # print versions
   bundle version
+  coffee --version
   compass version
   dart --version
   dart2js --version
@@ -129,6 +139,7 @@ script: |
   pub version
   python --version
   ruby --version
+  uglifyjs --version
 
 env:
   GOOGLE_APPENGINE: /usr/local/google_appengine
