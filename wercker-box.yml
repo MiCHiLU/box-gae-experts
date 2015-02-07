@@ -79,7 +79,7 @@ script: |
   mkdir -p "$HOME/go/{src,pkg,bin}"
   # set GOPATH
   echo "export PATH=$PATH:/usr/local/go_appengine:$GOPATH/bin:$WERCKER_SOURCE_DIR/bin" | sudo tee -a /etc/profile
-  echo 'export GOPATH="$HOME/go:$WERCKER_SOURCE_DIR"' | sudo tee -a /etc/profile
+  echo 'export GOPATH=$HOME/go:$WERCKER_SOURCE_DIR' | sudo tee -a /etc/profile
 
   # Dart
   # Install Dart SDK
