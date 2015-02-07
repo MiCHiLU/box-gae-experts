@@ -17,6 +17,8 @@ packages:
   - pip
   - python@2.7.3
 script: |
+  gae_version="1.9.17"
+
   cd $WERCKER_SOURCE_DIR
   export
   ./hosts.sh
@@ -34,9 +36,9 @@ script: |
   curl -s https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | sudo python
   sudo easy_install pip
 
-  # Google App Engine
+  # Google App Engine Python
   sudo apt-get install libxml2-dev libxslt1-dev python2.7-dev unzip -y
-  curl -s -o google_appengine.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.17.zip
+  curl -s -o google_appengine.zip https://storage.googleapis.com/appengine-sdks/featured/google_appengine_${gae_version}.zip
   sudo unzip -q google_appengine.zip -d /usr/local
   rm google_appengine.zip
   sudo patch -d /usr/local/google_appengine/lib/endpoints-1.0/endpoints -p0 -i $PWD/endpoints.patch
