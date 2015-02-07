@@ -10,7 +10,7 @@
 # https://github.com/wercker/step-npm-install/blob/master/run.sh
 
 name: gae-experts
-version: 0.0.0-2
+version: 0.0.0-3
 type: main
 platform: ubuntu@12.04
 description: wercker box for Google App Engine Go/Python.
@@ -196,7 +196,7 @@ default-deploy:
     text-to-append: |
       # Build definition
       steps:
-      - setup-go-workspace
+      - michilu/setup-go-workspace
       - michilu/go-appengine-deploy:
           email:    $APP_ENGINE_EMAIL
           password: $APP_ENGINE_PASSWORD
