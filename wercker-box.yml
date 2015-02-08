@@ -188,18 +188,25 @@ default-build:
               code: |-
                 rsync -avz --copy-unsafe-links ${GOPATH%%:*}/ $WERCKER_OUTPUT_DIR
 
-default-deploy:
-  go:
-    priority : 50
-    detect:
-      - default: true
-    text-to-append: |
-      # Build definition
-      steps:
-      - michilu/setup-go-workspace
-      - michilu/go-appengine-deploy:
-          email:    $APP_ENGINE_EMAIL
-          password: $APP_ENGINE_PASSWORD
+deploy:
+  steps:
+  - michilu/setup-goapp-workspace
+  - script:
+    name: deploy to Google App Engine
+    code: |
+      if [ `grep "^runtime: go" -l -null **/*.yaml` ]
+      then
+        debug 'Set $GOPATH';
+        export GOPATH="$WERCKER_SOURCE_DIR";
+        debug 'Display $GOPATH';
+        goapp env GOPATH;
+        export source_dir=`find "src/$WERCKER_GIT_DOMAIN/$WERCKER_GIT_OWNER/$WERCKER_GIT_REPOSITORY" -maxdepth 4 -name app.yaml | head -n1 |xargs dirname`;
+      else
+        export source_dir="$WERCKER_SOURCE_DIR";
+      fi
+      debug 'Starting deployment'
+      (cd "$source_dir" && echo "$APP_ENGINE_PASSWORD" | appcfg.py update `grep "^application:" -l -null *.yaml` --email="$APP_ENGINE_EMAIL" --passin)
+      success 'Finished'
 
 env:
   GOOGLE_APPENGINE: /usr/local/google_appengine
