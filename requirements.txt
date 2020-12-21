@@ -1,7 +1,7 @@
 # for Google App Engine
 # https://cloud.google.com/appengine/docs/python/tools/libraries27
 
-PyYAML==3.10
+PyYAML==5.1
 WebOb==1.2.3
 pycrypto==2.6
 
